@@ -3,7 +3,33 @@ import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
 /**
  *
  */
-const getIntros = async (ids = []) => {};
+const getIntros = async (ids = []) => {
+
+  //array of user promise responses
+
+  const responsePromises = ids.map((id)=>fetchUserById(id));
+
+  //// wait for all of the promises to resolve
+  //  if one rejects, this whole function will reject!
+
+  const responses = await Promise.all(responsePromises);
+
+  // check if responses are ok or not
+
+  for (const res of responses){
+    if(!res.ok){
+      throw Error ('Oops someting goes wrong');
+    }
+  } 
+
+  //parses respnses into user objects
+
+  const userPromises = responses.map((respnse)=>respnse.json());
+  const users = await Promise.all(userPromises);
+
+  const intro = users.map((user)=>`${user.id}: Hello, my name is ${user.name}`);
+   return intro;
+};
 
 // --- --- tests --- ---
 

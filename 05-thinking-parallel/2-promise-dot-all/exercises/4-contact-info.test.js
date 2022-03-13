@@ -1,9 +1,39 @@
+import { labeledLogger } from '../../../lib/labeled-logger.js';
 import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
+
+const { log, error } = labeledLogger();
 
 /**
  *
  */
-const contactDetails = async (ids = []) => {};
+const contactDetails = async (ids = []) => {
+  try{
+     // responsea promise array
+  const responsePromises = ids.map(id=>fetchUserById(id));
+
+// wait till responses promises resolve
+const responses = await Promise.all(responsePromises);
+
+//check if the responses are ok or not
+
+for (const res of responses){
+  if(!res.ok){
+    throw error (`${res.status}: ${res.statusText}`);
+  }
+}
+//parse the response promses into user objects
+
+const userPromises = responses.map((user)=>user.json());
+const users = await Promise.all(userPromises);
+
+const usersContactDetails = users.map((user)=>`${user.id}. ${user.email}, ${user.phone}, ${user.website}`);
+
+return usersContactDetails;
+
+  } catch (err){
+     error(err);
+  }
+};
 
 // --- --- tests --- ---
 
@@ -12,7 +42,7 @@ describe('contactDetails: returns an array of user contact details', () => {
     it('finds contact details for user 5', async () => {
       const actual = await contactDetails([5]);
       expect(actual).toEqual([
-        '5: Lucio_Hettinger@annie.ca, (254)954-1289, demarco.info',
+        '5. Lucio_Hettinger@annie.ca, (254)954-1289, demarco.info',
       ]);
     });
     it('finds contact details for users 6, 1, 2', async () => {

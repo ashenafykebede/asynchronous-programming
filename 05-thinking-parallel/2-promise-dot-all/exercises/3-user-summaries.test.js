@@ -5,7 +5,33 @@ import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
 /**
  *
  */
-const createSummaries = async (ids = []) => {};
+const createSummaries = async (ids = []) => {
+ 
+ // responsea promise array
+  const responsePromises = ids.map(id=>fetchUserById(id));
+
+// wait till responses promises resolve
+const responses = await Promise.all(responsePromises);
+
+//check if the responses are ok or not
+
+for (const res of responses){
+  if(!res.ok){
+    throw error ('oops uknown error occured');
+  }
+}
+//parse the response promses into user objects
+
+const userPromises = responses.map((user)=>user.json());
+const users = await Promise.all(userPromises);
+
+const usersummary = users.map((user)=>({
+  name: user.name,
+  city: user.address.city,
+  companyName: user.company.name
+}));
+return usersummary;
+};
 
 // --- --- tests --- ---
 

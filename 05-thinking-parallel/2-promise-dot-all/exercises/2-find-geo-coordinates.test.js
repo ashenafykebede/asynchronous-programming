@@ -1,9 +1,29 @@
+import { labeledLogger } from '../../../lib/labeled-logger.js';
 import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
+
+const { log, error } = labeledLogger();
 
 /**
  *
  */
-const findGeoCoordinates = async (ids = []) => {};
+const findGeoCoordinates = async (ids = []) => { 
+  const responsePromises = ids.map(nextId => fetchUserById(nextId));  
+  log("responsePromises:",responsePromises);
+  const responses = await Promise.all(responsePromises); 
+  log("responses:",responses);
+
+  for (const res of responses) { 
+    if (!res.ok) 
+    { throw new Error(`${res.status}: ${res.statusText}`); } 
+    } 
+
+    const userPromises = responses.map((response) => response.json());
+     const users = await Promise.all(userPromises); 
+     const coordinates = users.map((user)=>({
+       lat: user.address.geo.lat,
+       lng:user.address.geo.lng
+     }));
+     return coordinates; }; 
 
 // --- --- tests --- ---
 
