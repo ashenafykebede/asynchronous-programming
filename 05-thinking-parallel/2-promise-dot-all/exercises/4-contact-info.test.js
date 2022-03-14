@@ -8,26 +8,28 @@ const { log, error } = labeledLogger();
  */
 const contactDetails = async (ids = []) => {
   try{
-     // responsea promise array
+     // responses promise array
   const responsePromises = ids.map(id=>fetchUserById(id));
 
 // wait till responses promises resolve
 const responses = await Promise.all(responsePromises);
 
-//check if the responses are ok or not
-
-for (const res of responses){
-  if(!res.ok){
-    throw error (`${res.status}: ${res.statusText}`);
-  }
-}
-//parse the response promses into user objects
-
+//parse the response promses into user detail object promises
 const userPromises = responses.map((user)=>user.json());
+
+// wait till user detail promises resolve
 const users = await Promise.all(userPromises);
 
-const usersContactDetails = users.map((user)=>`${user.id}. ${user.email}, ${user.phone}, ${user.website}`);
-
+//loop through each response to check if it is ok or not
+//if ok push user details , otherwise push error message 
+let usersContactDetails = [];
+for (const res of responses){
+  if(!res.ok){
+    usersContactDetails.push(`${res.status}: ${res.statusText}`);
+  }else{
+    usersContactDetails.push(`${users[responses.indexOf(res)].id}. ${users[responses.indexOf(res)].email}, ${users[responses.indexOf(res)].phone}, ${users[responses.indexOf(res)].website}`);
+  }
+}
 return usersContactDetails;
 
   } catch (err){
