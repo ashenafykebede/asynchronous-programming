@@ -7,7 +7,7 @@ import { renderPhoto } from './render-photo.js';
  */
 export const renderAlbum = (album = {}, photos = []) => {
   const container = document.createElement('div');
-  container.id = `album-${album.id}-${album.title.spilt(' ').join('-')}`;
+  container.id = `album-${album.id}-${album.title.split(' ').join('-')}`;
 
   const titleEl = document.createElement('h2');
   titleEl.innerHTML = album.title;
@@ -25,6 +25,7 @@ export const renderAlbum = (album = {}, photos = []) => {
     all.appendChild(next);
     return all;
   }, document.createElement('div'));
+  
   container.appendChild(renderedPhotos);
 
   return container;

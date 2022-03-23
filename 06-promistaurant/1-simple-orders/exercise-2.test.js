@@ -25,7 +25,11 @@ import {
  *  Complete the following code so that the test passes
  */
 
-const carolinesOrder = _;
+const carolinesOrder = preparePortion(sizes.small, bases.fineNoodles)
+.then((meal)=>addVegetables(meal))
+.then((meal)=>addTopping(meal, toppings.tofu))
+.then((meal)=>addSauce(meal,sauces.curry))
+.then((meal)=>bag(meal));
 
 carolinesOrder
   .then((theMeal) => {

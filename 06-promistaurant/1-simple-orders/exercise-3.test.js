@@ -25,7 +25,11 @@ import {
  *  Complete the following code so that the test passes
  */
 
-const daisysOrder = _;
+const daisysOrder = preparePortion(sizes.large, bases.fineNoodles)
+.then((meal)=>addVegetables(meal))
+.then((meal)=>addTopping(meal, toppings.shrimps))
+.then((meal)=>addSauce(meal,sauces.sweetSour))
+.then((meal)=>bag(meal));;
 
 daisysOrder
   .then((theMeal) => {

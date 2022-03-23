@@ -25,11 +25,16 @@ import {
  *  Complete the following code so that the test passes
  */
 
-const preparedExtras = _;
+const preparedExtras = Promise.all([extras.springOnion,extras.broccoli,extras.roastedPeanuts].map((extra)=>prepareExtra(extra)));
 
-const mealWithoutExtras = _;
+const mealWithoutExtras = preparePortion(sizes.small,bases.riceNoodles)
+.then((meal)=>addVegetables(meal))
+.then((meal)=>addTopping(meal,toppings.vegetarian))
+.then((meal)=>addSauce(meal,sauces.satay));
 
-const geraltsMeal = _;
+const geraltsMeal = Promise.all([mealWithoutExtras,preparedExtras])
+.then(([meal,prepExtras])=>addPreparedExtras(meal,prepExtras))
+.then((meal)=>bag(meal));
 
 geraltsMeal
   .then((theMeal) => {
@@ -43,7 +48,7 @@ geraltsMeal
         expect(theMeal.size).toEqual(sizes.small);
       });
       it('should have base: fine noodles', () => {
-        expect(theMeal.base).toEqual(bases.fineNoodles);
+        expect(theMeal.base).toEqual(bases.fineNoodles);//riceNoodles??
       });
       it('should have sauce: satay', () => {
         expect(theMeal.sauce).toEqual(sauces.satay);

@@ -27,7 +27,8 @@ for (const res of responses){
   if(!res.ok){
     usersContactDetails.push(`${res.status}: ${res.statusText}`);
   }else{
-    usersContactDetails.push(`${users[responses.indexOf(res)].id}. ${users[responses.indexOf(res)].email}, ${users[responses.indexOf(res)].phone}, ${users[responses.indexOf(res)].website}`);
+    const user = users[responses.indexOf(res)];
+    usersContactDetails.push(`${user.id}. ${user.email}, ${user.phone}, ${user.website}`);
   }
 }
 return usersContactDetails;

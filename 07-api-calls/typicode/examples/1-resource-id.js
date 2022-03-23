@@ -27,7 +27,6 @@ const fetchById = async (resourceType = '', id = 0) => {
   // --- fetch the API data (this works!) ---
   const encodedURL = encodeURI(URL);
   const response = await fetch(encodedURL);
-
   // --- throw an error if the response is not ok (this works!) ---
   if (!response.ok) {
     const message = response.statusText
