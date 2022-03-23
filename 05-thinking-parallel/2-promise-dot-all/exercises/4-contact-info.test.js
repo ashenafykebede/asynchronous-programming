@@ -23,12 +23,17 @@ const users = await Promise.all(userPromises);
 //loop through each response to check if it is ok or not
 //if ok push user details , otherwise push error message 
 let usersContactDetails = [];
-for (const res of responses){
+for (const res of responses){  
   if(!res.ok){
     usersContactDetails.push(`${res.status}: ${res.statusText}`);
   }else{
+<<<<<<< HEAD
     const user = users[responses.indexOf(res)];
     usersContactDetails.push(`${user.id}. ${user.email}, ${user.phone}, ${user.website}`);
+=======
+    let user = users[responses.indexOf(res)];
+    usersContactDetails.push(`${user.id}. ${user.email}, ${users[responses.indexOf(res)].phone}, ${user.website}`);
+>>>>>>> 705204f4cef7e384ed6e8938d5d94bee477c2f0e
   }
 }
 return usersContactDetails;
