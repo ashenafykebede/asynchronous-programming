@@ -18,7 +18,7 @@ pElEmail.innerHTML= `email: ${user.email}`;
 userContainer.appendChild(pElEmail);
 
 const pEleWebsite = document.createElement('p');
-pEleWebsite.innerHTML= `website: <a href="${user.website}" target="_blank"> ${user.website}</a>`;
+pEleWebsite.innerHTML= `website: <a href="http://${user.website}" target="_blank"> ${user.website}</a>`;
 userContainer.appendChild(pEleWebsite);
 
 const todosElement = todos.map(renderToDo).reduce((all,next)=>{
