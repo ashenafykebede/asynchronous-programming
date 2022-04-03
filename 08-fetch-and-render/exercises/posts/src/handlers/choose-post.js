@@ -13,4 +13,5 @@ export const choosePost = async (event)=>{
 
     const PostElement = renderPost(post,comments);
     root.appendChild(PostElement);
+    console.log("Im here");
 }
