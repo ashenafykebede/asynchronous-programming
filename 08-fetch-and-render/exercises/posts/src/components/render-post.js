@@ -18,10 +18,13 @@ export const renderPost = (post={},comments=[])=>{
     PEle.innerHTML = post.body;
     postContainer.appendChild(PEle);
 
+    const commentsEle = document.createElement('div');
+    commentsEle.id = "comments";
     const commentsElement = comments.map(renderComment).reduce((all,next)=>{
      all.appendChild(next);
      return all;
-    },document.createElement('div'));
+    },commentsEle);
+    console.log(commentsElement.childNodes);
     postContainer.appendChild(commentsElement);
 
     return postContainer;
